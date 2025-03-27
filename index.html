@@ -3,116 +3,294 @@
 <head>
     <title>For My Asma Cutie</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&family=Great+Vibes&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&family=Great+Vibes&family=Comic+Neue:wght@700&display=swap');
         
         body {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
             margin: 0;
-            overflow: hidden;
+            padding: 0;
+            background: linear-gradient(135deg, #ffcce6 0%, #ff99cc 100%);
+            font-family: 'Comic Neue', cursive;
+            height: 100vh;
+            overflow-x: hidden;
             text-align: center;
+            transition: background 1s;
         }
         
-        .hearts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        /* Letterbox Styling */
+        .letterbox-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            perspective: 1000px;
+            z-index: 100;
         }
         
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            color: rgba(255, 0, 0, 0.5);
-            animation: float 5s linear infinite;
+        .letterbox {
+            width: 300px;
+            height: 200px;
+            background: #fff9f9;
+            border: 15px solid #ff6699;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            color: #ff0066;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .letterbox:hover {
+            transform: translate(-50%, -50%) rotateY(15deg) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+        
+        .letterbox:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+        
+        /* Love Page */
+        .love-page {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 50px 20px;
         }
         
         .love-text {
-            color: #d10000;
-            font-size: 3.5em;
-            font-weight: bold;
+            font-size: 4em;
+            margin: 20px 0;
             opacity: 0;
-            animation: fadeIn 3s ease-in forwards;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            margin: 10px 0;
-            z-index: 1;
-        }
-        
-        .first-line {
+            animation: fadeIn 2s forwards;
             font-family: 'Pacifico', cursive;
+            color: #ff0066;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: color 0.5s;
+            cursor: default;
         }
         
-        .second-line {
+        .love-text:hover {
+            color: #ff66b3;
+        }
+        
+        .proposal-text {
             font-family: 'Great Vibes', cursive;
-            animation-delay: 1.5s;
+            font-size: 3.5em;
+            margin: 40px 0;
+            color: #e60073;
+            opacity: 0;
+            animation: fadeIn 2s forwards 1.5s;
         }
         
-        .cat-container {
-            position: relative;
-            z-index: 1;
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             margin-top: 30px;
+            opacity: 0;
+            animation: fadeIn 2s forwards 3s;
         }
         
-        .cat-image {
-            width: 350px;
-            height: auto;
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        .btn-yes {
+            background: #ff3399;
+            color: white;
+        }
+        
+        .btn-no {
+            background: #ccc;
+            color: #666;
+            position: relative;
+        }
+        
+        .btn:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Cat Gallery */
+        .cat-gallery {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .cat-card {
+            position: relative;
+            width: 300px;
             border-radius: 20px;
+            overflow: hidden;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            border: 5px solid white;
             transition: transform 0.3s;
+            background: white;
         }
         
-        .cat-image:hover {
+        .cat-card:hover {
             transform: scale(1.05);
         }
         
-        .heart-emoji {
+        .cat-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .cat-caption {
             position: absolute;
-            font-size: 30px;
-            animation: pulse 1.5s infinite;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 0, 102, 0.8);
+            color: white;
+            padding: 15px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            text-shadow: 1px 1px 2px black;
         }
         
+        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
         
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
+            50% { transform: scale(1.1); }
             100% { transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+            50% { transform: translate(-50%, -50%) translateY(-20px); }
+        }
+        
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 999;
+        }
+        
+        /* Fireworks */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px;
+            animation: firework-animation 2s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes firework-animation {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="hearts" id="hearts"></div>
-    
-    <div class="love-text first-line">I love yewwww my asma cutie</div>
-    <div class="love-text second-line">Will u meowrry me?</div>
-    
-    <div class="cat-container">
-        <img class="cat-image" src="https://cataas.com/cat/cute/says/Meow?" alt="Cute cat proposing">
-        <div class="heart-emoji" style="top: -15px; left: -15px;">❤️</div>
-        <div class="heart-emoji" style="bottom: -15px; right: -15px;">❤️</div>
+    <!-- Letterbox -->
+    <div class="letterbox-container" id="letterboxContainer">
+        <div class="letterbox" id="letterbox">Hi! 💌</div>
     </div>
     
+    <!-- Love Page -->
+    <div class="love-page" id="lovePage">
+        <div class="love-text">I love yewwww my asma cutie</div>
+        <div class="proposal-text">Will u meowrry me?</div>
+        
+        <div class="button-container">
+            <button class="btn btn-yes" id="btnYes">YES!</button>
+            <button class="btn btn-no" id="btnNo">YES!</button>
+        </div>
+    </div>
+    
+    <!-- Cat Gallery -->
+    <div class="cat-gallery" id="catGallery">
+        <!-- Cat cards will be added by JavaScript -->
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="openSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+    <audio id="yesSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+    <audio id="fireworkSound" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-pop-1689.mp3" preload="auto"></audio>
+    
     <script>
+        // Letterbox click event
+        document.getElementById('letterbox').addEventListener('click', function() {
+            // Play opening sound
+            document.getElementById('openSound').play();
+            
+            // Animate letterbox opening
+            const letterbox = this;
+            letterbox.style.transform = 'translate(-50%, -50%) rotateX(90deg)';
+            letterbox.style.opacity = '0';
+            
+            // Show love page after animation
+            setTimeout(() => {
+                document.getElementById('letterboxContainer').style.display = 'none';
+                document.getElementById('lovePage').style.display = 'flex';
+                createHearts();
+            }, 500);
+        });
+        
+        // Yes button click event
+        document.getElementById('btnYes').addEventListener('click', function() {
+            // Play yes sound
+            document.getElementById('yesSound').play();
+            
+            // Create confetti
+            createConfetti();
+            
+            // Create fireworks
+            createFireworks();
+            
+            // Show cat gallery after a delay
+            setTimeout(showCatGallery, 1500);
+        });
+        
+        document.getElementById('btnNo').addEventListener('click', function() {
+            // Playful "no" button behavior
+            const btnNo = this;
+            btnNo.style.transform = 'translate(' + 
+                (Math.random() * 200 - 100) + 'px, ' + 
+                (Math.random() * 200 - 100) + 'px)';
+            btnNo.style.transition = 'transform 0.2s';
+            
+            setTimeout(() => {
+                btnNo.style.transform = 'none';
+            }, 200);
+        });
+        
         // Create floating hearts
         function createHearts() {
-            const heartsContainer = document.getElementById('hearts');
-            for (let i = 0; i < 20; i++) {
+            const heartsContainer = document.createElement('div');
+            heartsContainer.className = 'hearts';
+            document.body.appendChild(heartsContainer);
+            
+            for (let i = 0; i < 30; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
                 heart.innerHTML = '❤';
@@ -124,15 +302,135 @@
             }
         }
         
-        // Fallback image
-        document.querySelector('.cat-image').addEventListener('error', function() {
-            this.src = 'https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg';
-        });
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#ff0000', '#ff6699', '#ff99cc', '#ff0066', '#ff3399'];
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = -10 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                
+                document.body.appendChild(confetti);
+                
+                const animationDuration = Math.random() * 3 + 2;
+                
+                confetti.style.animation = `
+                    confetti-fall ${animationDuration}s linear forwards
+                `;
+                
+                // Create keyframes dynamically
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes confetti-fall {
+                        0% {
+                            transform: translateY(0) rotate(0deg);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(${Math.random() * 360}deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                    style.remove();
+                }, animationDuration * 1000);
+            }
+        }
         
-        // Initialize
-        window.onload = function() {
+        // Create fireworks
+        function createFireworks() {
+            const colors = ['#ff0000', '#ff6699', '#ff0066', '#ff3399', '#ff99cc'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * 100 + 'vw';
+                    firework.style.top = Math.random() * 100 + 'vh';
+                    firework.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Set random end position
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 100 + 50;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    firework.style.setProperty('--tx', tx + 'px');
+                    firework.style.setProperty('--ty', ty + 'px');
+                    
+                    document.body.appendChild(firework);
+                    
+                    // Play firework sound randomly
+                    if (Math.random() > 0.7) {
+                        const fireworkSound = document.getElementById('fireworkSound').cloneNode();
+                        fireworkSound.play();
+                    }
+                    
+                    // Remove firework after animation
+                    setTimeout(() => {
+                        firework.remove();
+                    }, 2000);
+                }, i * 150);
+            }
+        }
+        
+        // Show cat gallery
+        function showCatGallery() {
+            document.getElementById('lovePage').style.display = 'none';
+            document.getElementById('catGallery').style.display = 'flex';
+            
+            const catGallery = document.getElementById('catGallery');
+            const catMessages = [
+                "You're purr-fect!",
+                "Meow-ried to you!",
+                "Forever yours!",
+                "Love you to the moon!",
+                "My heart goes meow!",
+                "Best decision ever!",
+                "Happily ever after!",
+                "Soulmates fur-ever!"
+            ];
+            
+            // Create 8 cat cards
+            for (let i = 0; i < 8; i++) {
+                const catCard = document.createElement('div');
+                catCard.className = 'cat-card';
+                
+                const catImg = document.createElement('img');
+                catImg.className = 'cat-image';
+                catImg.src = `https://cataas.com/cat/cute/says/I%20love%20you%20${i+1}?size=40&color=white`;
+                catImg.alt = `Cute cat ${i+1}`;
+                
+                // Fallback if image fails to load
+                catImg.onerror = function() {
+                    this.src = 'https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg';
+                };
+                
+                const caption = document.createElement('div');
+                caption.className = 'cat-caption';
+                caption.textContent = catMessages[i % catMessages.length];
+                
+                catCard.appendChild(catImg);
+                catCard.appendChild(caption);
+                catGallery.appendChild(catCard);
+            }
+            
+            // Add more hearts and effects
             createHearts();
-        };
+            setTimeout(createConfetti, 1000);
+            setTimeout(createFireworks, 2000);
+        }
     </script>
 </body>
 </html>
